@@ -37,3 +37,19 @@ The ETL process is performed by the `etl.py` file. The `songs` and `artists` tab
 * README.md: * (This file)
 * sql_queries.py: * File containing the queries used to create tables, delete tables and return information.
 * test.ipynb: * File used to validate the uploaded data.
+
+## Example Query
+
+
+Top 5 Songs by duration
+```
+SELECT C.name, B.title, SUM(B.duration)  
+    FROM songplays A 
+    JOIN songs B 
+        ON A.song_id = B.song_id 
+    JOIN artists C 
+        ON A.artist_id = C.artist_id 
+GROUP BY C.name, B.title 
+ORDER BY 3 
+LIMIT 5;
+```
