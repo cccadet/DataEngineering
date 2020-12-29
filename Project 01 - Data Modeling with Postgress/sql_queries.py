@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS songplays (
     start_time float, 
     user_id int, 
     level varchar, 
-    song_id int, 
-    artist_id int, 
+    song_id text, 
+    artist_id text, 
     session_id int, 
     location varchar, 
     user_agent varchar
