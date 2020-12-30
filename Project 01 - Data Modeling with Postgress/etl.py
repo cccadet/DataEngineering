@@ -6,6 +6,16 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
+    """
+    This procedure processes a song file whose filepath has been provided as an arugment.
+    It extracts the song information in order to store it into the songs table.
+    Then it extracts the artist information in order to store it into the artists table.
+
+    INPUTS: 
+    * cur the cursor variable
+    * filepath the file path to the song file
+    """
+
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -19,6 +29,16 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """
+    This procedure processes the log files with the provided path, creating a pandas dataframe with the data and filtering by the 'page' = 'NextSong' attribute.
+    From that dataframe, the following tables are created: 'time', 'users', and 'songplays'.
+
+    INPUTS: 
+    * cur the cursor variable
+    * filepath the file path to the song file    
+    """
+
+
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -26,12 +46,13 @@ def process_log_file(cur, filepath):
     df = df[df['page']=='NextSong']
 
     # convert timestamp column to datetime
-    t = pd.to_datetime(df['ts'], unit='ms') 
+    t = pd.to_datetime(df['ts'], unit='ms')
+    df['ts'] = pd.to_datetime(df['ts'], unit='ms') 
     
     # insert time data records
-    time_data = [(dt.timestamp(), dt.hour, dt.day, dt.week, dt.month, dt.year, dt.weekday()) for dt in t]
+    time_data = [t,t.dt.hour,t.dt.day,t.dt.week,t.dt.month,t.dt.year,t.dt.weekday]
     column_labels = ('timestamp', 'hour', 'day', 'week', 'month', 'year', 'weekday')
-    time_df = pd.DataFrame(time_data, columns=column_labels)
+    time_df = pd.DataFrame(dict(zip(column_labels,time_data)))
 
     for i, row in time_df.iterrows():
         cur.execute(time_table_insert, list(row))
@@ -47,7 +68,7 @@ def process_log_file(cur, filepath):
     for index, row in df.iterrows():
         
         # get songid and artistid from song and artist tables
-        cur.execute(song_select, (row.song, row.artist, row.length))
+        cur.execute(song_select, (row.song, row.artist, round(row.length)))
         results = cur.fetchone()
         
         if results:
@@ -61,6 +82,17 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    """
+    This procedure searches for all the '.json' files in the informed directory. Then, based on the total number of files, iterates over the files by executing the function received by parameter, passing the cursor and the file to be processed. At each iteration, a commit is performed.
+
+    INPUTS: 
+    * cur the cursor variable
+    * conn the database connection
+    * filepath the file path to the song file
+    * func the function that will be used to process the data    
+    """
+
+
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -80,6 +112,11 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    """
+    The main function that makes the connection to the database, creates the cursor and processes the data according to specified parameters. Finally, the connection to the database is closed.
+    """
+
+
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 
