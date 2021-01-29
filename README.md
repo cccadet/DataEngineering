@@ -12,4 +12,16 @@ README.md (this file)
 │   │   test.ipynb
 │
 └───Project 02 - Data Modeling with Apache Cassandra
+│   │   event_data
+│   │   images
+│   │   Project_1B_ Project_Template.ipynb
+│   
+└───Project 03 - Data Warehouse
+│   │   Query_Result.PNG
+│   │   README.md
+│   │   Schema_Design.png
+│   │   create_tables.py
+│   │   etl.py
+│   │   sql_queries.py
+|
 ```
