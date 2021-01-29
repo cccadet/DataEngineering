@@ -7,18 +7,22 @@ def load_staging_tables(cur, conn):
     """
     Load data into the staging tables.
     """
+    print("Run copy_table_queries")
     for query in copy_table_queries:
         cur.execute(query)
         conn.commit()
+    print("copy_table_queries OK")    
 
 
 def insert_tables(cur, conn):
     """
     Insert data from the staging tables to the fact/dimensions tables.
     """
+    print("Run insert_table_queries")
     for query in insert_table_queries:
         cur.execute(query)
         conn.commit()
+    print("insert_table_queries OK")
 
 
 def main():
