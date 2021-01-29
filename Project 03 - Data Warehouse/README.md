@@ -1,4 +1,4 @@
-# Cloud Data Warehouse - Sparkify 
+# Cloud Data Warehouse - Sparkify
 
 
 This is the third project submission for the Udacity Data Engineering Nanodegree.
@@ -12,28 +12,28 @@ A startup called Sparkify wants to analyze the data they've been collecting on s
 - Log data: `s3://udacity-dend/log_data`
 Log data json path: `s3://udacity-dend/log_json_path.json`
 
-This project seeks to create a Redshift database with tables developed to optimize analysis queries in the music database.
+This project seeks to create a Redshift Data Warehouse with tables developed to optimize analysis queries in the music database.
 
 ## Schema Design
 
 
-The schema used for this project is the Star Schema. A fact table was created containing the data related to the events of the songs. In addition, the `songs`, `artists`, `time`, and `users` dimensions were created. This schema is the most recommended due to the need to perform JOINs between tables and the ease of returning data from this project. 
+The schema used for this project is the Star Schema. A fact table was created containing the data related to the events of the songs. In addition, the `songs`,` artists`, `time`, and` users` dimensions were created. This schema is the most recommended due to the need to perform JOINs between tables and the ease of returning data from this project.
 
-![Schema Design](Schema_Design.png?raw=true "Schema Design")
+! [Schema Design] (Schema_Design.png? Raw = true "Schema Design")
 
-Diante desse esquema, o ditribution style foi definido visando avaliações voltadas para análises por usuário. Com base nesse foco, seguem as características das tabelas criadas:
-- Tabelas `songplays`: possui o campo `user_id` como distkey. Possui a seguinte compound sortkey `artist_id,song_id`.
-- Tabela `users`: possui o campo `user_id` como distkey. Possui o campo `first_name` como sortkey.
-- Tabela `songs`: Distribution style foi definido como `AUTO`, porque não conheço o tamanho da tabela e estou me familiarizando com o funcionamento do Redshit. Por isso, resolvi deixar que o próprio Redshift defina a melhor forma de Distribution style. Possui a seguinte compound sortkey `artist_id,song_id`.
-- Tabela `artists`: Distribution style foi definido como `AUTO`, porque não conheço o tamanho da tabela e estou me familiarizando com o funcionamento do Redshit. Por isso, resolvi deixar que o próprio Redshift defina a melhor forma de Distribution style. Possui o campo `artist_id` como sortkey.
-- Tabela `time`: Distribution style foi definido como `ALL` e o campo `start_time` foi usado como sortkey.
+In view of this scheme, the distribution style was defined aiming at evaluations aimed at analyzes by user. Based on this focus, the characteristics of the created tables follow:
+- `Songplays` table: has the` user_id` field as a distkey. It has the following compound sortkey `artist_id, song_id`.
+- `users` table: has the` user_id` field as a distkey. It has the field `first_name` as sortkey.
+- `songs` table: Distribution style was defined as` AUTO`, because I do not know the size of the table and I am familiarizing myself with how Redshit works. So I decided to let Redshift itself define the best form of Distribution style. It has the following compound sortkey `artist_id, song_id`.
+- `artists` table: Distribution style was defined as` AUTO`, because I do not know the size of the table and I am familiarizing myself with how Redshit works. So I decided to let Redshift itself define the best form of Distribution style. It has the field `artist_id` as sortkey.
+- Table `time`: Distribution style was defined as` ALL` and the field `start_time` was used as sortkey.
  
 
 
 ## ETL Pipeline
 
 
-The ETL process is performed by the `etl.py` file. Primeiramente esse script copia os dados de um bucket S3 para tabelas staging (staging_events_copy, staging_songs_copy). Posteriormente os dados das tabelas staging são carregados para as tabelas fato/dimensões realizando as transformações necessárias. 
+The ETL process is performed by the `etl.py` file. First, this script copies data from an S3 bucket to staging tables (staging_events_copy, staging_songs_copy). Subsequently, the data from the staging tables are loaded into the fact/dimensions tables, making the necessary transformations.
 
 
 ## How to run the Python scripts
@@ -56,18 +56,19 @@ The ETL process is performed by the `etl.py` file. Primeiramente esse script cop
 
 
 Top 5 Songs by duration (Level = 'paid' AND Gender = 'F')
+
 ```
-SELECT C.name, B.title, SUM(B.duration)  
-    FROM songplays A 
-    JOIN songs B 
-        ON A.song_id = B.song_id 
-    JOIN artists C 
-        ON A.artist_id = C.artist_id 
-    JOIN users D 
-        ON A.user_id = D.user_id   
-WHERE LOWER(A.LEVEL) = 'paid'
+SELECT C.name, B.title, SUM (B.duration)
+    FROM songplays A
+    JOIN songs B
+        ON A.song_id = B.song_id
+    JOIN artists C
+        ON A.artist_id = C.artist_id
+    JOIN users D
+        ON A.user_id = D.user_id
+WHERE LOWER (A.LEVEL) = 'paid'
 AND D.gender = 'F'
-GROUP BY C.name, B.title 
+GROUP BY C.name, B.title
 ORDER BY 3 DESC
 LIMIT 5;
 ```
