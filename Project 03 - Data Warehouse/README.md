@@ -19,7 +19,7 @@ This project seeks to create a Redshift Data Warehouse with tables developed to 
 
 The schema used for this project is the Star Schema. A fact table was created containing the data related to the events of the songs. In addition, the `songs`,` artists`, `time`, and` users` dimensions were created. This schema is the most recommended due to the need to perform JOINs between tables and the ease of returning data from this project.
 
-! [Schema Design] (Schema_Design.png? Raw = true "Schema Design")
+![Schema Design](Schema_Design.png?Raw=true "Schema Design")
 
 In view of this scheme, the distribution style was defined aiming at evaluations aimed at analyzes by user. Based on this focus, the characteristics of the created tables follow:
 - `Songplays` table: has the` user_id` field as a distkey. It has the following compound sortkey `artist_id, song_id`.
@@ -57,6 +57,7 @@ The ETL process is performed by the `etl.py` file. First, this script copies dat
 
 Top 5 Songs by duration (Level = 'paid' AND Gender = 'F')
 
+
 ```
 SELECT C.name, B.title, SUM (B.duration)
     FROM songplays A
@@ -72,3 +73,8 @@ GROUP BY C.name, B.title
 ORDER BY 3 DESC
 LIMIT 5;
 ```
+
+
+Query Result:
+
+![Query Result](Query_Result.PNG?Raw=true "Query Result")

@@ -73,7 +73,7 @@ compound sortkey(artist_id,song_id)
 user_table_create = ("""
 CREATE TABLE IF NOT EXISTS users (
     user_id INT NOT NULL          distkey, 
-    first_name VARCHAR, 
+    first_name VARCHAR            sortkey, 
     last_name VARCHAR, 
     gender VARCHAR, 
     level VARCHAR
