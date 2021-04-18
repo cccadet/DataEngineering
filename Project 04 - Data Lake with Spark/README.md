@@ -19,14 +19,6 @@ The schema used for this project is the Star Schema. A fact table was created co
 
 ![Schema Design](Schema_Design.png?Raw=true "Schema Design")
 
-In view of this scheme, the distribution style was defined aiming at evaluations aimed at analyzes by user. Based on this focus, the characteristics of the created tables follow:
-- `Songplays` table: has the` user_id` field as a distkey. It has the following compound sortkey `artist_id, song_id`.
-- `users` table: has the` user_id` field as a distkey. It has the field `first_name` as sortkey.
-- `songs` table: Distribution style was defined as` AUTO`, because I do not know the size of the table and I am familiarizing myself with how Redshit works. So I decided to let Redshift itself define the best form of Distribution style. It has the following compound sortkey `artist_id, song_id`.
-- `artists` table: Distribution style was defined as` AUTO`, because I do not know the size of the table and I am familiarizing myself with how Redshit works. So I decided to let Redshift itself define the best form of Distribution style. It has the field `artist_id` as sortkey.
-- Table `time`: Distribution style was defined as` ALL` and the field `start_time` was used as sortkey.
- 
-
 
 ## ETL Pipeline
 
