@@ -23,5 +23,19 @@ README.md (this file)
 │   │   create_tables.py
 │   │   etl.py
 │   │   sql_queries.py
+│   
+└───Project 04 - Data Lake with Spark
+│   │   data
+│   │   etl.py
+│   │   README.md
+│   │   Schema_Design.png
+│   
+└───Project 05 - Data pipelines with Airflow
+│   │   dags
+│   │   plugins
+│   │   create_tables.py
+│   │   Execution.PNG
+│   │   README.me
+│   │   Schema_Design.png
 |
 ```
