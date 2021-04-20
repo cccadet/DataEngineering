@@ -31,11 +31,17 @@ First, the stages events, and songs are loaded. After the loading of the fact ta
 ## How to run the Python scripts
 
 1 - Create Redshift cluster
+
 2 - Setup 'AWS_Credentials' connection on Airflow
+
 3 - Setup 'redshift' connection on Airflow
+
 4 - Create tables on redshift query console (create_tables.sql)
+
 5 - Run /opt/airflow/start.sh
+
 6 - Turn On Dag
+
 7 - Wait for scheduler or trigger Dag
 
 
