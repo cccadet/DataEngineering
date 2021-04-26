@@ -220,6 +220,19 @@ LEFT JOIN region dr
 ON po.region = dr.region
 """)
 
+#DATA QUALITY
+
+unique_state = ("""
+SELECT case when count(*) = count(distinct state_id) then 'Check state count: OK' else 'Check state count: Error' end 
+FROM state
+""")
+
+coronavirus_null_city_id = ("""
+SELECT case when count(*) > 0 then 'Check coronavirus.city_id: Error' else 'Check coronavirus.city_id: OK' end 
+FROM coronavirus where city_id is null
+""")
+
+
 # QUERY LISTS
 
 #CREATE
@@ -232,3 +245,5 @@ copy_table_queries = [staging_brazil_cities_coordinates, staging_brazil_populati
 insert_table_queries = [cities_table_insert, region_table_insert, health_region_table_insert, state_table_insert, time_table_insert]
 #FACT_INSERT
 fact_insert = [coronavirus_table_insert]
+#DATA_QUALITY
+data_quality_queries = [unique_state, coronavirus_null_city_id]
